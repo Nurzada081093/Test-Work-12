@@ -108,20 +108,24 @@ const GalleryCard: React.FC<Props> = ({ galleryImage }) => {
               sx={{ "--Avatar-size": "2.5rem" }}
             />
           )}
-          <Link
-            onClick={() => navigate(`/authorGallery/${galleryImage.user._id}`)}
-            level="body-xs"
-            underline="none"
-            sx={{
-              fontSize: "18px",
-              fontWeight: "md",
-              marginLeft: "10px",
-              color: "text.secondary",
-              "&:hover": { color: "danger.plainColor" },
-            }}
-          >
-            {galleryImage.user.displayName}
-          </Link>
+          <Box>
+            <Typography level="body-xs" sx={{marginLeft: '10px'}}>Created by {galleryImage.user.role}</Typography>
+            <Link
+              onClick={() => navigate(`/authorGallery/${galleryImage.user._id}`)}
+              level="body-xs"
+              underline="none"
+              sx={{
+                fontSize: "18px",
+                fontWeight: "md",
+                marginLeft: "10px",
+                color: "text.secondary",
+                "&:hover": { color: "danger.plainColor" },
+              }}
+            >
+              {galleryImage.user.displayName}
+            </Link>
+          </Box>
+
           {user && user.role === "admin" ? (
             <Button
               variant="outlined"

@@ -13,8 +13,8 @@ const ToolBar = () => {
   const user = useAppSelector(userFromSlice);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "rgba(0,0,0,0.79)" }}>
+    <Box sx={{ flexGrow: 1}}>
+      <AppBar position="static" sx={{ backgroundColor: "rgba(0,0,0,0.79)", padding: '10px 0' }}>
         <Container>
           <Toolbar
             sx={{

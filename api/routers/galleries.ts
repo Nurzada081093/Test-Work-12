@@ -20,26 +20,6 @@ galleryRouter.get('/', async (req, res, next) => {
     }
 });
 
-galleryRouter.get('/:id', async (req, res, next) => {
-    const id = req.params.id;
-
-    if (!req.params.id) {
-        res.status(404).send({error: 'Image id not found!'});
-    }
-
-    try {
-        const image = await Gallery.findById(id).populate('user', '_id displayName role avatar');
-
-        if (!image) {
-            res.status(404).send({error: 'Image not found'});
-        }
-
-        res.send(image);
-    } catch (e) {
-        next(e);
-    }
-});
-
 galleryRouter.post('/', imagesUpload.single('gallery_image'), auth, async (req, res, next) => {
     let expressReq = req as RequestWithUser;
     const user = expressReq.user;

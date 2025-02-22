@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IImageMutation, ValidationError } from "../../types";
-import { addImage, getGallery } from "./galleryThunk.ts";
+import { addImage, getAuthorGallery, getGallery } from './galleryThunk.ts';
 import { RootState } from "../../app/store.ts";
 
 interface InitialProps {
@@ -60,6 +60,19 @@ const gallerySlice = createSlice({
         state.gallery = gallery;
       })
       .addCase(getGallery.rejected, (state) => {
+        state.loadings.getGalleries = false;
+        state.error = true;
+      })
+      .addCase(getAuthorGallery.pending, (state) => {
+        state.loadings.getGalleries = true;
+        state.error = false;
+      })
+      .addCase(getAuthorGallery.fulfilled, (state, { payload: gallery }) => {
+        state.loadings.getGalleries = false;
+        state.error = false;
+        state.gallery = gallery;
+      })
+      .addCase(getAuthorGallery.rejected, (state) => {
         state.loadings.getGalleries = false;
         state.error = true;
       });

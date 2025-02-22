@@ -43,3 +43,11 @@ export const getGallery = createAsyncThunk<IImageMutation[], void>(
     return response.data || [];
   },
 );
+
+export const getAuthorGallery = createAsyncThunk<IImageMutation[], string>(
+  "gallery/getAuthorGallery",
+  async (authorId) => {
+    const response = await axiosRequest(`/gallery?author=${authorId}`);
+    return response.data || [];
+  },
+);
