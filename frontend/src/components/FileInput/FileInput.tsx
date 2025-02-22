@@ -52,10 +52,11 @@ const FileInput: React.FC<Props> = ({ name, label, onGetFile }) => {
             variant="contained"
             onClick={activateInput}
             sx={{
-              width: '100%',
-              marginTop: '10px',
-              backgroundColor: 'rgba(25,140,202,0.87)'
-          }}>
+              width: "100%",
+              marginTop: "10px",
+              backgroundColor: "rgba(25,140,202,0.87)",
+            }}
+          >
             Browse
           </Button>
         </Grid>

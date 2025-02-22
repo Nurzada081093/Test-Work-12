@@ -1,42 +1,46 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid2';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { NavLink, useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
-import { UserRegister } from '../../../../types';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks.ts';
-import { registerErrorFromSlice, registerLoadingFromSlice } from '../../usersSlice.ts';
-import { CircularProgress } from '@mui/material';
-import { GoogleLogin } from '@react-oauth/google';
-import { googleLoginOrRegisterUser } from '../../usersThunk.ts';
-import FileInput from '../../../../components/FileInput/FileInput.tsx';
-import { toast } from 'react-toastify';
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid2";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { NavLink, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { UserRegister } from "../../../../types";
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks.ts";
+import {
+  registerErrorFromSlice,
+  registerLoadingFromSlice,
+} from "../../usersSlice.ts";
+import { CircularProgress } from "@mui/material";
+import { GoogleLogin } from "@react-oauth/google";
+import { googleLoginOrRegisterUser } from "../../usersThunk.ts";
+import FileInput from "../../../../components/FileInput/FileInput.tsx";
+import { toast } from "react-toastify";
 
 interface Props {
   register: (user: UserRegister) => void;
 }
 
 const initialUserState = {
-  username: '',
-  password: '',
-  displayName: '',
+  username: "",
+  password: "",
+  displayName: "",
   avatar: null,
 };
 
-const RegisterForm: React.FC<Props> = ({register}) => {
-  const [registerForm, setRegisterForm] = useState<UserRegister>(initialUserState);
+const RegisterForm: React.FC<Props> = ({ register }) => {
+  const [registerForm, setRegisterForm] =
+    useState<UserRegister>(initialUserState);
   const registerError = useAppSelector(registerErrorFromSlice);
   const loading = useAppSelector(registerLoadingFromSlice);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onChangeUser = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setRegisterForm((prevState) => ({
       ...prevState,
@@ -47,15 +51,19 @@ const RegisterForm: React.FC<Props> = ({register}) => {
   const submitUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (registerForm.username.trim().length !== 0 || registerForm.password.trim().length !== 0 || registerForm.displayName.trim().length !== 0) {
+    if (
+      registerForm.username.trim().length !== 0 ||
+      registerForm.password.trim().length !== 0 ||
+      registerForm.displayName.trim().length !== 0
+    ) {
       if (!registerForm.avatar) {
-        toast.error('Please select an avatar!');
+        toast.error("Please select an avatar!");
         return;
       }
     }
 
-    register({...registerForm});
-    setRegisterForm(initialUserState)
+    register({ ...registerForm });
+    setRegisterForm(initialUserState);
   };
 
   const getError = (fieldName: string) => {
@@ -79,7 +87,7 @@ const RegisterForm: React.FC<Props> = ({register}) => {
 
   const googleRegister = async (credential: string) => {
     await dispatch(googleLoginOrRegisterUser(credential)).unwrap();
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -88,29 +96,32 @@ const RegisterForm: React.FC<Props> = ({register}) => {
         sx={{
           marginTop: 4,
           marginBottom: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          backgroundColor: 'rgba(245,245,245,0.75)',
-          borderRadius: '10px',
-          padding: '30px 0',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          backgroundColor: "rgba(245,245,245,0.75)",
+          borderRadius: "10px",
+          padding: "30px 0",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box sx={{pt: 2}}>
-          <GoogleLogin onSuccess={((credentialResponse) => {
-            if (credentialResponse.credential) {
-              void googleRegister(credentialResponse.credential);
-            }
-          })} onError={() => alert('Login failed!')}/>
+        <Box sx={{ pt: 2 }}>
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              if (credentialResponse.credential) {
+                void googleRegister(credentialResponse.credential);
+              }
+            }}
+            onError={() => alert("Login failed!")}
+          />
         </Box>
         <Box component="form" noValidate onSubmit={submitUser} sx={{ mt: 3 }}>
-          <Grid container direction={'column'} spacing={2}>
+          <Grid container direction={"column"} spacing={2}>
             <Grid size={12}>
               <TextField
                 fullWidth
@@ -118,8 +129,8 @@ const RegisterForm: React.FC<Props> = ({register}) => {
                 label="Username"
                 name="username"
                 onChange={onChangeUser}
-                error={Boolean(getError('username'))}
-                helperText={getError('username')}
+                error={Boolean(getError("username"))}
+                helperText={getError("username")}
               />
             </Grid>
             <Grid size={12}>
@@ -129,8 +140,8 @@ const RegisterForm: React.FC<Props> = ({register}) => {
                 label="Display name"
                 name="displayName"
                 onChange={onChangeUser}
-                error={Boolean(getError('displayName'))}
-                helperText={getError('displayName')}
+                error={Boolean(getError("displayName"))}
+                helperText={getError("displayName")}
               />
             </Grid>
             <Grid size={12}>
@@ -141,8 +152,8 @@ const RegisterForm: React.FC<Props> = ({register}) => {
                 type="password"
                 id="password"
                 onChange={onChangeUser}
-                error={Boolean(getError('password'))}
-                helperText={getError('password')}
+                error={Boolean(getError("password"))}
+                helperText={getError("password")}
               />
             </Grid>
             <Grid size={12}>
@@ -161,13 +172,13 @@ const RegisterForm: React.FC<Props> = ({register}) => {
             sx={{ mt: 3, mb: 2 }}
           >
             Sign Up
-            {loading ?  <CircularProgress size="30px" sx={{marginLeft: '20px'}}/> : null}
+            {loading ? (
+              <CircularProgress size="30px" sx={{ marginLeft: "20px" }} />
+            ) : null}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid size={12}>
-              <NavLink to={'/login'}>
-                Already have an account? Sign in
-              </NavLink>
+              <NavLink to={"/login"}>Already have an account? Sign in</NavLink>
             </Grid>
           </Grid>
         </Box>

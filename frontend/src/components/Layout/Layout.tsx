@@ -1,15 +1,13 @@
-import React, { PropsWithChildren } from 'react';
-import ToolBar from '../UI/ToolBar/ToolBar.tsx';
+import React, { PropsWithChildren } from "react";
+import ToolBar from "../UI/ToolBar/ToolBar.tsx";
 
-const Layout:React.FC<PropsWithChildren> = ({children}) => {
+const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <header>
         <ToolBar />
       </header>
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
     </>
   );
 };

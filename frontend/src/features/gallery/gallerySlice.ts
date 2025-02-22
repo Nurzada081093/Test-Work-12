@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IImageMutation, ValidationError } from '../../types';
-import { addImage } from './galleryThunk.ts';
-import { RootState } from '../../app/store.ts';
+import { createSlice } from "@reduxjs/toolkit";
+import { IImageMutation, ValidationError } from "../../types";
+import { addImage, getGallery } from "./galleryThunk.ts";
+import { RootState } from "../../app/store.ts";
 
 interface InitialProps {
   gallery: IImageMutation[];
@@ -9,7 +9,7 @@ interface InitialProps {
     addImage: boolean;
     getGalleries: boolean;
     deleteImage: boolean;
-  },
+  };
   error: boolean;
   addError: ValidationError | null;
 }
@@ -23,14 +23,17 @@ const initialState: InitialProps = {
   },
   error: false,
   addError: null,
-}
+};
 
 export const galleryFromSlice = (state: RootState) => state.gallery.gallery;
 export const addErrorFromSlice = (state: RootState) => state.gallery.addError;
-export const addLoadingFromSlice = (state: RootState) => state.gallery.loadings.addImage;
+export const addLoadingFromSlice = (state: RootState) =>
+  state.gallery.loadings.addImage;
+export const getLoadingFromSlice = (state: RootState) =>
+  state.gallery.loadings.getGalleries;
 
 const gallerySlice = createSlice({
-  name: 'gallery',
+  name: "gallery",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -43,11 +46,24 @@ const gallerySlice = createSlice({
         state.loadings.addImage = false;
         state.addError = null;
       })
-      .addCase(addImage.rejected, (state, {payload: error}) => {
+      .addCase(addImage.rejected, (state, { payload: error }) => {
         state.loadings.addImage = false;
         state.addError = error || null;
+      })
+      .addCase(getGallery.pending, (state) => {
+        state.loadings.getGalleries = true;
+        state.error = false;
+      })
+      .addCase(getGallery.fulfilled, (state, { payload: gallery }) => {
+        state.loadings.getGalleries = false;
+        state.error = false;
+        state.gallery = gallery;
+      })
+      .addCase(getGallery.rejected, (state) => {
+        state.loadings.getGalleries = false;
+        state.error = true;
       });
-  }
+  },
 });
 
 export const galleryReducer = gallerySlice.reducer;

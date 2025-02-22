@@ -30,7 +30,7 @@ export interface ValidationError {
     [key: string]: {
       name: string;
       message: string;
-    },
+    };
     messages: string;
     name: string;
     _message: string;
