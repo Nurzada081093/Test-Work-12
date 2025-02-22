@@ -6,12 +6,12 @@ import Typography from "@mui/joy/Typography";
 import { apiUrl } from "../../../../../globalConstants.ts";
 import ModalWindow from "../../../../../components/ModalWindow/ModalWindow.tsx";
 import { AspectRatio, Avatar, Box, Link } from "@mui/joy";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from '../../../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from "../../../../../app/hooks.ts";
 import { userFromSlice } from "../../../../users/usersSlice.ts";
-import { deleteImage, getGallery } from '../../../galleryThunk.ts';
-import { toast } from 'react-toastify';
+import { deleteImage, getGallery } from "../../../galleryThunk.ts";
+import { toast } from "react-toastify";
 
 interface Props {
   galleryImage: IImageMutation;
@@ -22,13 +22,30 @@ const GalleryCard: React.FC<Props> = ({ galleryImage }) => {
   const user = useAppSelector(userFromSlice);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [deleteLoading, setDeleteLoading] = useState<{
+    index: string | null;
+    loading: boolean;
+  }>({
+    index: null,
+    loading: false,
+  });
 
   const deleteTheImage = async (imageId: string) => {
     if (user && user.role === "admin") {
-      await dispatch(deleteImage({imageId, token: user.token})).unwrap();
+      setDeleteLoading((prevState) => ({
+        ...prevState,
+        loading: true,
+        index: imageId,
+      }));
+      await dispatch(deleteImage({ imageId, token: user.token })).unwrap();
       await dispatch(getGallery()).unwrap();
-      toast.success('Image was successfully deleted by admin!');
+      toast.success("Image was successfully deleted by admin!");
       navigate(`/`);
+      setDeleteLoading((prevState) => ({
+        ...prevState,
+        loading: false,
+        index: null,
+      }));
     }
   };
 
@@ -45,7 +62,7 @@ const GalleryCard: React.FC<Props> = ({ galleryImage }) => {
           width: 300,
           bgcolor: "initial",
           p: 1,
-          marginBottom: "50px",
+          margin: "0 20px 50px",
           border: "1px solid lightgrey",
         }}
         onClick={() => setOpen(true)}
@@ -117,9 +134,13 @@ const GalleryCard: React.FC<Props> = ({ galleryImage }) => {
             />
           )}
           <Box>
-            <Typography level="body-xs" sx={{marginLeft: '10px'}}>Created by {galleryImage.user.role}</Typography>
+            <Typography level="body-xs" sx={{ marginLeft: "10px" }}>
+              Created by {galleryImage.user.role}
+            </Typography>
             <Link
-              onClick={() => navigate(`/authorGallery/${galleryImage.user._id}`)}
+              onClick={() =>
+                navigate(`/authorGallery/${galleryImage.user._id}`)
+              }
               level="body-xs"
               underline="none"
               sx={{
@@ -133,14 +154,21 @@ const GalleryCard: React.FC<Props> = ({ galleryImage }) => {
               {galleryImage.user.displayName}
             </Link>
           </Box>
-
           {user && user.role === "admin" ? (
             <Button
               variant="outlined"
-              sx={{ width: "100px", marginLeft: "auto" }}
+              sx={{ width: "100px", marginLeft: "auto", fontSize: "12px" }}
               onClick={() => deleteTheImage(galleryImage._id)}
+              disabled={
+                deleteLoading.loading &&
+                galleryImage._id === deleteLoading.index
+              }
             >
               Delete
+              {deleteLoading.loading &&
+              galleryImage._id === deleteLoading.index ? (
+                <CircularProgress size="15px" sx={{ marginLeft: "5px" }} />
+              ) : null}
             </Button>
           ) : null}
         </Box>

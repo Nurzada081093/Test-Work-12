@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IImageMutation, ValidationError } from "../../types";
-import { addImage, deleteImage, getAuthorGallery, getGallery } from './galleryThunk.ts';
+import {
+  addImage,
+  deleteImage,
+  getAuthorGallery,
+  getGallery,
+} from "./galleryThunk.ts";
 import { RootState } from "../../app/store.ts";
 
 interface InitialProps {

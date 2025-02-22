@@ -52,9 +52,11 @@ export const getAuthorGallery = createAsyncThunk<IImageMutation[], string>(
   },
 );
 
-export const deleteImage = createAsyncThunk<void, {imageId: string, token: string}>(
-  'gallery/deleteImage',
-  async ({imageId, token}) => {
-    await axiosRequest.delete(`/gallery/${imageId}`, {headers: {'Authorization': token}});
-  }
-);
+export const deleteImage = createAsyncThunk<
+  void,
+  { imageId: string; token: string }
+>("gallery/deleteImage", async ({ imageId, token }) => {
+  await axiosRequest.delete(`/gallery/${imageId}`, {
+    headers: { Authorization: token },
+  });
+});
