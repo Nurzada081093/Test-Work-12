@@ -12,6 +12,12 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.5",
+    "@mui/joy": "^5.0.0-beta.51",
+    "@mui/material": "^6.4.5",
+    "@mui/styled-engine-sc": "^6.4.3",
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.5.1",
     "axios": "^1.7.9",
@@ -20,8 +26,10 @@
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.2.0",
+    "react-toastify": "^11.0.3",
     "redux-persist": "^6.0.0",
-    "redux-thunk": "^3.1.0"
+    "redux-thunk": "^3.1.0",
+    "styled-components": "^6.1.15"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
