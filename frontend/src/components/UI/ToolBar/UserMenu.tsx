@@ -54,10 +54,14 @@ const UserMenu:React.FC<Props> = ({user}) => {
         onClose={handleClose}
       >
         {user && user.role === 'admin' && <MenuItem onClick={() => {
-          navigate('/admin');setAnchorEl(null);
+          navigate('/admin');
+          setAnchorEl(null);
         }}>Admin</MenuItem>}
-        {user && <MenuItem onClick={() => navigate(`/authorCollections/${user._id}`)}>My profile</MenuItem>}
-        <MenuItem onClick={() => navigate('/addNewImage')}>Add new image</MenuItem>
+        <MenuItem onClick={() => {
+          navigate('/addImage');
+          setAnchorEl(null);
+        }}
+        >Add new image to gallery</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>

@@ -40,3 +40,15 @@ export interface ValidationError {
 export interface GlobalError {
   error: string;
 }
+
+export interface IImage {
+  title: string;
+  gallery_image: File | null;
+}
+
+export interface IImageMutation {
+  _id: string;
+  user: IUser;
+  title: string;
+  gallery_image: string;
+}

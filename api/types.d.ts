@@ -5,5 +5,11 @@ export interface UserData {
     token: string;
     displayName: string;
     googleId: string;
-    avatar: string | null;
+    avatar: string | undefined;
+}
+
+export interface IImage {
+    user: UserData;
+    gallery_image: string | undefined;
+    title: string;
 }
