@@ -87,16 +87,6 @@ const UserMenu: React.FC<Props> = ({ user }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {user && user.role === "admin" && (
-          <MenuItem
-            onClick={() => {
-              navigate("/admin");
-              setAnchorEl(null);
-            }}
-          >
-            Admin
-          </MenuItem>
-        )}
         <MenuItem
           onClick={() => {
             navigate(`/authorGallery/${user._id}`);

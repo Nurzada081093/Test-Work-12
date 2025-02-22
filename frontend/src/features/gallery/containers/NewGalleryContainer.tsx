@@ -18,7 +18,6 @@ const NewGalleryContainer = () => {
       toast.success("Image was successfully added to gallery!");
       navigate("/");
     }
-    console.log(image);
   };
 
   return (

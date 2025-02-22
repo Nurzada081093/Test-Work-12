@@ -8,8 +8,10 @@ import ModalWindow from "../../../../../components/ModalWindow/ModalWindow.tsx";
 import { AspectRatio, Avatar, Box, Link } from "@mui/joy";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../../../app/hooks.ts";
+import { useAppDispatch, useAppSelector } from '../../../../../app/hooks.ts';
 import { userFromSlice } from "../../../../users/usersSlice.ts";
+import { deleteImage, getGallery } from '../../../galleryThunk.ts';
+import { toast } from 'react-toastify';
 
 interface Props {
   galleryImage: IImageMutation;
@@ -19,9 +21,15 @@ const GalleryCard: React.FC<Props> = ({ galleryImage }) => {
   const [open, setOpen] = useState<boolean>(false);
   const user = useAppSelector(userFromSlice);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const deleteTheImage = async (imageId: string) => {
-    console.log(imageId);
+    if (user && user.role === "admin") {
+      await dispatch(deleteImage({imageId, token: user.token})).unwrap();
+      await dispatch(getGallery()).unwrap();
+      toast.success('Image was successfully deleted by admin!');
+      navigate(`/`);
+    }
   };
 
   return (

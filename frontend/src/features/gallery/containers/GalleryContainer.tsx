@@ -17,7 +17,6 @@ const GalleryContainer = () => {
     dispatch(getGallery());
   }, [dispatch]);
 
-  console.log(gallery);
   return (
     <Container>
       {loading ? (
@@ -36,9 +35,9 @@ const GalleryContainer = () => {
             <GalleryCards galleryImages={gallery} />
           ) : (
             <Typography
-              sx={{ fontSize: "50px", margin: "15% 0", textAlign: "center" }}
+              sx={{ fontSize: "50px", margin: "10% 0", textAlign: "center" }}
             >
-              No collections yet!
+              Gallery is empty!
             </Typography>
           )}
         </Box>

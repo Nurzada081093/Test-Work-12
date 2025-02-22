@@ -5,12 +5,15 @@ import CardCover from '@mui/joy/CardCover';
 import { apiUrl } from '../../../../../globalConstants.ts';
 import Typography from '@mui/joy/Typography';
 import { Box } from '@mui/joy';
-import { useAppSelector } from '../../../../../app/hooks.ts';
+import { useAppDispatch, useAppSelector } from '../../../../../app/hooks.ts';
 import { userFromSlice } from '../../../../users/usersSlice.ts';
 import ModalWindow from '../../../../../components/ModalWindow/ModalWindow.tsx';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Avatar from '@mui/joy/Avatar';
 import Button from '@mui/material/Button';
+import { deleteImage, getAuthorGallery } from '../../../galleryThunk.ts';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   authorGalleryImage: IImageMutation;
@@ -19,9 +22,21 @@ interface Props {
 const AuthorGalleryCard:React.FC<Props> = ({authorGalleryImage}) => {
   const [open, setOpen] = useState<boolean>(false);
   const user = useAppSelector(userFromSlice);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const deleteTheImage = async (imageId: string) => {
-    console.log(imageId);
+    if (user) {
+      await dispatch(deleteImage({imageId, token: user.token})).unwrap();
+      await dispatch(getAuthorGallery(user._id)).unwrap();
+      if (user.role === 'admin') {
+        toast.success('Image was successfully deleted by admin!');
+        navigate(`/`);
+        return;
+      }
+      toast.success('You have successfully deleted your image in your gallery!');
+      navigate(`/authorGallery/${user._id}`);
+    }
   };
 
   return (
